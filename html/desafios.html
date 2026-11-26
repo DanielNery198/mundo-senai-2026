@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desafios Práticos: Canva e Excel | Workshop Interativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#0B3C8C;--navy:#0E2A5C;--sky:#EAF1FB;--or:#F58220;--ordk:#C85A00;--gray:#4A5565;--line:#D5DCE6;--white:#fff;--green:#1B7F3B;--red:#B42318}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;background:#fff}
+body{font-family:'Libre Baskerville',Georgia,'Times New Roman',serif;color:var(--navy)}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:#fff;overflow:hidden}
+.slide{position:absolute;inset:0 0 110px 0;padding:70px 110px 0;visibility:hidden}
+.slide.active,.slide.leaving{visibility:visible}
+.slide.active{z-index:2}
+h1{font-size:56px;line-height:1.15;color:var(--blue);font-weight:700}
+h2{font-size:36px;color:var(--navy);font-weight:700;margin:24px 0 14px}
+p,li{font-size:28px;line-height:1.5}
+ul{padding-left:36px}li{margin:8px 0}
+.a{opacity:0}
+.slide.active .a{animation:in .8s cubic-bezier(.2,.8,.2,1) var(--d,0s) both}
+.slide.leaving .a{animation:out .45s ease-in both}
+@keyframes in{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-30px)}}
+.rel{position:relative;z-index:1}
+
+/* Rodapé */
+#foot{position:absolute;left:0;right:0;bottom:0;height:110px;border-top:4px solid var(--blue);background:#fff;display:flex;align-items:center;padding:0 40px;gap:30px;z-index:5}
+#theme{font-size:28px;font-weight:700;color:var(--navy);flex:1}
+#foot button{width:72px;height:72px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:36px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#foot button:hover,#foot button:focus-visible{background:var(--or);color:var(--navy);outline:none}
+
+/* Capa */
+.big{font-size:120px;line-height:1.05;color:var(--blue);margin-top:40px;font-weight:700}
+.bar{width:620px;height:16px;background:var(--or);border-radius:8px;margin:15px 0 30px;transform-origin:left}
+.slide.active .bar{animation:grow 1s .6s both}@keyframes grow{from{transform:scaleX(0)}}
+.tags{display:flex;gap:24px;align-items:center;font-size:64px;font-weight:700}
+.tag{padding:6px 34px;border-radius:18px}.tag.b{background:var(--blue);color:#fff}.tag.o{background:var(--or);color:var(--navy)}
+.names{display:flex;flex-wrap:wrap;gap:16px 34px;margin-top:50px;max-width:1300px}
+.names span{font-size:28px;font-weight:700;border-bottom:5px solid var(--or);padding-bottom:4px}
+
+/* Mocks de Desafios */
+.mock{display:flex;gap:40px;margin-top:20px;align-items:stretch}
+.pane{background:#fff;border:4px solid var(--blue);border-radius:12px;padding:30px;width:1100px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:start}
+.pane.full{grid-template-columns:1fr}
+.pane .tt{grid-column:1/-1;text-align:center;font-size:48px;font-weight:700;color:var(--blue);margin-bottom:10px}
+.opt{border:3px dashed var(--line);border-radius:12px;padding:20px;cursor:pointer;background:#fff;font:inherit;text-align:left;color:var(--navy);font-size:26px;transition:all .2s}
+.opt:hover,.opt:focus-visible{border-color:var(--or);outline:none;background:var(--sky)}
+.opt.ok{border:4px solid var(--green);background:#E7F5EC;color:var(--green);font-weight:700}
+.opt.no{border:4px solid var(--red);background:#FDECEA;color:var(--red)}
+.note{margin-top:18px;min-height:110px;background:var(--navy);color:#fff;border-radius:14px;padding:20px 28px;font-size:28px;line-height:1.4;width:100%}
+
+/* Tabelas Excel */
+.sheet{border-collapse:collapse;font-size:30px;width:100%;margin-top:10px}
+.sheet th{background:#E8ECF1;padding:10px 20px;font-weight:700;border:2px solid var(--line);color:var(--navy)}
+.sheet td{border:2px solid var(--line);padding:10px 16px;text-align:center}
+.sheet td.n{background:#E8ECF1;font-weight:700;width:50px}
+
+/* Placar e Resumo */
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:20px}
+.sum div{background:var(--sky);border-radius:18px;padding:26px 34px;border-top:10px solid var(--blue)}
+.sum b{font-size:36px;display:block;margin-bottom:8px}.sum span{font-size:28px;line-height:1.45}
+.cta{margin-top:30px;background:var(--or);color:var(--navy);border-radius:22px;padding:26px 40px;font-size:48px;font-weight:700;text-align:center}
+
+@media (prefers-reduced-motion:reduce){.slide .a,.bar{animation:none!important;opacity:1!important}}
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+<!-- 01 CAPA -->
+<section class="slide active" data-theme="Desafios de Canva e Excel">
+<div class="rel">
+<div class="big a" style="--d:.2s">4 Desafios</div>
+<div class="bar"></div>
+<div class="tags a" style="--d:.5s"><span>Práticos de</span><span class="tag b">Canva</span><span>e</span><span class="tag o">Excel</span></div>
+<div class="names a" style="--d:.8s">
+  <span>Desafio 1: Hierarquia Visual (Canva)</span>
+  <span>Desafio 2: Contraste & Cores (Canva)</span>
+  <span>Desafio 3: Fórmulas de Média (Excel)</span>
+  <span>Desafio 4: Soma de Valores (Excel)</span>
+</div>
+</div>
+</section>
+
+<!-- 02 DESAFIO 1 (CANVA - HIERARQUIA) -->
+<section class="slide" data-theme="Desafio 1 de 4: Canva - Hierarquia Visual">
+<div class="rel">
+<h1 class="a">Desafio 1: Hierarquia Visual</h1>
+<p class="a" style="--d:.2s;margin-top:10px">Qual dos blocos abaixo quebra a hierarquia visual do cartaz por estar fora de escala?</p>
+<div class="mock a" style="--d:.4s">
+  <div class="pane">
+    <button class="opt" style="font-size:24px"><b>A) TÍTULO PRINCIPAL</b><br><span style="font-size:36px;font-weight:700;color:var(--blue)">I WORKSHOP SENAI</span></button>
+    <button class="opt" data-ok="1" style="font-size:24px"><b>B) AVISO SECUNDÁRIO</b><br><span style="font-size:42px;font-weight:700;color:var(--ordk)">* ENTRADA GRATUITA *</span></button>
+    <button class="opt" style="font-size:24px"><b>C) DATA E HORÁRIO</b><br><span style="font-size:22px">20 de Outubro às 14:00h</span></button>
+    <button class="opt" style="font-size:24px"><b>D) LOCAL</b><br><span style="font-size:20px">Auditório Principal - Bloco A</span></button>
+  </div>
+  <div class="note" style="width:580px;min-height:300px">Selecione o bloco que possui tamanho exagerado para sua importância.</div>
+</div>
+</div>
+</section>
+
+<!-- 03 DESAFIO 2 (CANVA - CONTRASTE) -->
+<section class="slide" data-theme="Desafio 2 de 4: Canva - Contraste e Leitura">
+<div class="rel">
+<h1 class="a">Desafio 2: Contraste de Cores</h1>
+<p class="a" style="--d:.2s;margin-top:10px">Clique no botão que possui o pior contraste de cor (ilegível/cansativo):</p>
+<div class="mock a" style="--d:.4s">
+  <div class="pane full" style="grid-template-columns:1fr 1fr;gap:24px">
+    <button class="opt" style="background:#0B3C8C;color:#FFFFFF;text-align:center;padding:40px;font-weight:700">A) INSCREVA-SE JÁ<br><small style="font-weight:400;font-size:18px">(Texto Branco / Fundo Azul)</small></button>
+    <button class="opt" data-ok="1" style="background:#F58220;color:#FFEB3B;text-align:center;padding:40px;font-weight:700">B) INSCREVA-SE JÁ<br><small style="font-weight:400;font-size:18px">(Texto Amarelo / Fundo Laranja)</small></button>
+    <button class="opt" style="background:#EAF1FB;color:#0E2A5C;text-align:center;padding:40px;font-weight:700">C) INSCREVA-SE JÁ<br><small style="font-weight:400;font-size:18px">(Texto Azul / Fundo Azul Claro)</small></button>
+    <button class="opt" style="background:#0E2A5C;color:#F58220;text-align:center;padding:40px;font-weight:700">D) INSCREVA-SE JÁ<br><small style="font-weight:400;font-size:18px">(Texto Laranja / Fundo Azul Escuro)</small></button>
+  </div>
+  <div class="note" style="width:550px;min-height:300px">Escolha a opção que dificulta a leitura do usuário.</div>
+</div>
+</div>
+</section>
+
+<!-- 04 DESAFIO 3 (EXCEL - FÓRMULA MÉDIA) -->
+<section class="slide" data-theme="Desafio 3 de 4: Excel - Fórmulas Básicas">
+<div class="rel">
+<h1 class="a">Desafio 3: Cálculo da Média no Excel</h1>
+<p class="a" style="--d:.2s;margin-top:10px">Qual fórmula calcula corretamente a Média dos dois semestres na célula D2?</p>
+<div class="mock a" style="--d:.4s">
+  <div class="pane full" style="width:1000px">
+    <table class="sheet">
+      <thead>
+        <tr><th class="n"></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="n">1</td><td><b>Aluno</b></td><td><b>Semestre 1</b></td><td><b>Semestre 2</b></td><td><b>Média</b></td></tr>
+        <tr><td class="n">2</td><td>Lucas</td><td>8,0</td><td>10,0</td><td style="background:#FFF3E0;color:var(--ordk);font-weight:700">?</td></tr>
+      </tbody>
+    </table>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
+      <button class="opt" data-ok="1">=MÉDIA(B2;C2)</button>
+      <button class="opt">=SOMA(B2:C2)</button>
+      <button class="opt">=B2+C2/2</button>
+      <button class="opt">=MEDIA(B2+C2)</button>
+    </div>
+  </div>
+  <div class="note" style="width:620px;min-height:360px">Atenção ao nome e sintaxe padrão da função no Excel em português.</div>
+</div>
+</div>
+</section>
+
+<!-- 05 DESAFIO 4 (EXCEL - SOMA) -->
+<section class="slide" data-theme="Desafio 4 de 4: Excel - Soma de Valores">
+<div class="rel">
+<h1 class="a">Desafio 4: Soma de Valores no Excel</h1>
+<p class="a" style="--d:.2s;margin-top:10px">Qual a fórmula correta para somar todo o total de vendas do trimestre (célula B5)?</p>
+<div class="mock a" style="--d:.4s">
+  <div class="pane full" style="width:1000px">
+    <table class="sheet">
+      <thead>
+        <tr><th class="n"></th><th>A</th><th>B</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="n">1</td><td><b>Mês</b></td><td><b>Vendas</b></td></tr>
+        <tr><td class="n">2</td><td>Janeiro</td><td>R$ 1.200</td></tr>
+        <tr><td class="n">3</td><td>Fevereiro</td><td>R$ 1.500</td></tr>
+        <tr><td class="n">4</td><td>Março</td><td>R$ 1.300</td></tr>
+        <tr><td class="n">5</td><td><b>Total</b></td><td style="background:#FFF3E0;color:var(--ordk);font-weight:700">?</td></tr>
+      </tbody>
+    </table>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px">
+      <button class="opt" data-ok="1">=SOMA(B2:B4)</button>
+      <button class="opt">=SOMA(B2;B4)</button>
+      <button class="opt">=SOMAR(B2:B4)</button>
+      <button class="opt">=TOTAL(B2:B4)</button>
+    </div>
+  </div>
+  <div class="note" style="width:620px;min-height:360px">Lembre-se: O sinal de dois pontos (:) indica um intervalo contínuo de células no Excel.</div>
+</div>
+</div>
+</section>
+
+<!-- 06 ENCERRAMENTO -->
+<section class="slide" data-theme="Resultado e Conclusão">
+<div class="rel">
+<h1 class="a">Resultado do Workshop</h1>
+<div class="sum a" style="--d:.2s">
+  <div>
+    <b>Desempenho Geral</b>
+    <span id="score-text">Você completou os desafios!</span>
+  </div>
+  <div>
+    <b>Resumo das Competências</b>
+    <span>• Canva: Hierarquia Visual e Contraste Acessível.<br>• Excel: Cálculos de Média e Soma de Intervalos.</span>
+  </div>
+</div>
+<div class="cta a" style="--d:.5s" id="final-badge">Parabéns pelo aprendizado!</div>
+<div style="text-align:center;margin-top:30px">
+  <button id="btn-reset" style="padding:16px 32px;font-size:24px;border-radius:12px;border:none;background:var(--blue);color:#fff;font-weight:700;cursor:pointer">Reiniciar Desafios</button>
+</div>
+</div>
+</section>
+
+</div>
+
+<!-- RODAPÉ DE NAVEGAÇÃO -->
+<div id="foot">
+  <div id="theme">Capa</div>
+  <button id="prev" title="Anterior">&#10094;</button>
+  <button id="next" title="Próximo">&#10095;</button>
+</div>
+
+<script>
+(function(){
+  const stage = document.getElementById('stage');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const themeEl = document.getElementById('theme');
+  const btnPrev = document.getElementById('prev');
+  const btnNext = document.getElementById('next');
+  let current = 0;
+  let score = 0;
+  const answered = new Set();
+
+  function adjustScale(){
+    const ww = window.innerWidth;
+    const wh = window.innerHeight;
+    const scale = Math.min(ww / 1920, wh / 1080);
+    stage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+  window.addEventListener('resize', adjustScale);
+  adjustScale();
+
+  function goTo(index){
+    if(index < 0 || index >= slides.length) return;
+    if(index === current) return;
+
+    const prevSlide = slides[current];
+    const nextSlide = slides[index];
+
+    prevSlide.classList.remove('active');
+    prevSlide.classList.add('leaving');
+
+    setTimeout(() => {
+      prevSlide.classList.remove('leaving');
+    }, 450);
+
+    nextSlide.classList.add('active');
+    current = index;
+
+    themeEl.textContent = nextSlide.getAttribute('data-theme') || '';
+    updateScoreUI();
+  }
+
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight' || e.key === 'Space') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  // Lógica dos Desafios
+  document.querySelectorAll('.slide').forEach((slide, sIdx) => {
+    const opts = slide.querySelectorAll('.opt');
+    const note = slide.querySelector('.note');
+
+    opts.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if(answered.has(sIdx)) return;
+
+        const isOk = opt.getAttribute('data-ok') === '1';
+        opts.forEach(o => o.classList.remove('ok', 'no'));
+
+        if(isOk){
+          opt.classList.add('ok');
+          if(note) note.innerHTML = "<b>Correto!</b> Excelente análise técnica.";
+          score++;
+        } else {
+          opt.classList.add('no');
+          const correctOpt = Array.from(opts).find(o => o.getAttribute('data-ok') === '1');
+          if(correctOpt) correctOpt.classList.add('ok');
+          if(note) note.innerHTML = "<b>Incorreto!</b> A opção destacada em verde é a correta.";
+        }
+        answered.add(sIdx);
+        updateScoreUI();
+      });
+    });
+  });
+
+  function updateScoreUI(){
+    const scoreTxt = document.getElementById('score-text');
+    const badge = document.getElementById('final-badge');
+    if(scoreTxt && badge){
+      scoreTxt.innerHTML = `Você acertou <b>${score}</b> de 4 desafios propostos.`;
+      if(score === 4){
+        badge.textContent = "Excelente! Domínio completo dos conceitos de Canva e Excel!";
+        badge.style.background = "var(--green)";
+        badge.style.color = "#fff";
+      } else if(score >= 2){
+        badge.textContent = "Muito bom! Bom desempenho prático.";
+        badge.style.background = "var(--or)";
+        badge.style.color = "var(--navy)";
+      } else {
+        badge.textContent = "Continue praticando para aperfeiçoar suas habilidades.";
+        badge.style.background = "var(--sky)";
+        badge.style.color = "var(--navy)";
+      }
+    }
+  }
+
+  // Botão Reiniciar
+  const btnReset = document.getElementById('btn-reset');
+  if(btnReset){
+    btnReset.addEventListener('click', () => {
+      score = 0;
+      answered.clear();
+      document.querySelectorAll('.opt').forEach(o => o.classList.remove('ok', 'no'));
+      document.querySelectorAll('.note').forEach(n => {
+        if(n.id !== 'score-text') n.innerHTML = "Clique na opção que considerar correta.";
+      });
+      goTo(0);
+    });
+  }
+})();
+</script>
+</body>
+</html>
